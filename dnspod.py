@@ -20,7 +20,7 @@ def logger():
 def getopts():
     import argparse
     parser = argparse.ArgumentParser(description='github.com/migege/dnspod')
-    parser.add_argument('config', help='config file in yaml')
+    parser.add_argument('config', help='config file in yaml',default="conf.yaml")
     opts = parser.parse_args()
     return opts
 
@@ -57,6 +57,7 @@ class DNSPod(object):
             if self.DDns(ip):
                 self.ip = ip
                 Last('last.ip').Write(self.ip)
+                Last('conf.md5').Write(self.conf_md5)
                 return
         if conf_md5 and conf_md5 != self.conf_md5:
             logger().info("MD5 of conf changed")
@@ -90,7 +91,7 @@ class DNSPod(object):
     def __DDnsImpl(self, ip, todo_list):
         url = "https://dnsapi.cn/Record.Ddns"
         headers = {
-            "User-Agent": "github.com#migege#dnspod/0.0.2 (lzw.whu@gmail.com)",
+            "User-Agent": "dnspodchange/0.0.2 (271960725@qq.com)",
         }
 
         retry_list = []
